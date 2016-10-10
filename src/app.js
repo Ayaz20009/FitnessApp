@@ -1,6 +1,7 @@
 'use strict';
 
-var express = require('express');
+var express = require('express'),
+      posts = require('./mocks/posts.json');
 
 var app = express();
 
@@ -11,8 +12,16 @@ app.get('/',function(req,res){
   res.render('index')
 });
 
-app.get('/blog' ,function(req,res){
-  res.send("<h2>Blog Page </h2>");
+app.get('/blog/:title?' ,function(req,res){
+  var title = req.param.title;
+  if(title == undefined){
+    res.status(503);
+    res.send("This page is under construction");
+  }
+   else{
+     var post = posts[title];
+     res.render('post')
+   }
 });
 
 
